@@ -1,5 +1,5 @@
 import {Express, Request ,Response} from 'express';
-import { createCompany } from '../controllers/company.controller';
+// import { createCompany } from '../controllers/company.controller';
 
 function routes(app: Express){
     app.get("/check", (req:Request, res:Response)=> {
@@ -7,7 +7,7 @@ function routes(app: Express){
         return res.send("App is healthy")
     });
 
-    app.post('/api/company', createCompany);
+    // app.post('/api/company', createCompany);
 }
 
 export default routes;

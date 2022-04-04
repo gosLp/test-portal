@@ -9,6 +9,9 @@ const app_1 = __importDefault(require("../src/routes/app"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./routes/user"));
+const create_job_1 = __importDefault(require("./routes/create-job"));
+const company_1 = __importDefault(require("./routes/company"));
+const applicant_1 = __importDefault(require("./routes/applicant"));
 const db_1 = __importDefault(require("./db"));
 const app = (0, express_1.default)();
 const port = config_1.default.get("port");
@@ -17,6 +20,9 @@ app.use((0, cors_1.default)({
 }));
 app.use(body_parser_1.default.json());
 app.use('/users', user_1.default);
+app.use('/jobs', create_job_1.default);
+app.use('/company', company_1.default);
+app.use('/applicant', applicant_1.default);
 app.listen(port, () => {
     console.log(`Application listening at http://localhost:${port}`);
     (0, db_1.default)();

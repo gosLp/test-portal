@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import userRoutes from './routes/user'
+import jobRoutes from './routes/create-job';
+import companyRoutes from './routes/company';
+import applicantRoutes from './routes/applicant';
 
 import db from './db';
 
@@ -21,6 +24,9 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.use('/users', userRoutes);
+app.use('/jobs',jobRoutes);
+app.use('/company',companyRoutes);
+app.use('/applicant', applicantRoutes);
 
 
 app.listen(port, () =>{
