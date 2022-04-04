@@ -113,6 +113,7 @@ router.get('/:id', (req:Request, res:Response)=>{
         })
 } );
 
+// apply for a particular Job with id
 router.post('/apply/:id', (req:Request, res:Response)=>{
     job.findById({_id: req.params.id})
         .exec()
@@ -138,6 +139,8 @@ router.post('/apply/:id', (req:Request, res:Response)=>{
         })
 });
 
+
+// Find all the jobs the applicant applied for
 router.get('/applied/:id', (req:Request, res:Response)=>{
     const jobs=[String];
     const applicantId = req.params.id;
@@ -178,6 +181,28 @@ router.get('/applied/:id', (req:Request, res:Response)=>{
             console.log(err);
         })
         
+});
+
+//to check company jobs
+router.get('/company/:company', (req:Request, res:Response)=>{
+    job.find({"company":req.params.company})
+        .exec()
+        .then((doc)=>{
+            return res.status(200).json({
+                message: "Jobs Found",
+                jobs: doc
+            })
+        }).catch(err =>{
+
+            // console.log(err);
+            return res.status(404).json({
+                message: "Could not find Jobs ",
+                error: err
+            })
+
+        })
+        
+
 })
 
 export default router;

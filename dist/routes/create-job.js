@@ -136,5 +136,20 @@ router.get('/applied/:id', (req, res) => {
         console.log(err);
     });
 });
+router.get('/company/:company', (req, res) => {
+    job_model_1.default.find({ "company": req.params.company })
+        .exec()
+        .then((doc) => {
+        return res.status(200).json({
+            message: "Jobs Found",
+            jobs: doc
+        });
+    }).catch(err => {
+        return res.status(404).json({
+            message: "Could not find Jobs ",
+            error: err
+        });
+    });
+});
 exports.default = router;
 //# sourceMappingURL=create-job.js.map
