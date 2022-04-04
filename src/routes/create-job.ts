@@ -67,7 +67,8 @@ router.post('/create', (req:Request, res:Response)=>{
                             then((doc)=>{
                                 console.log(doc);
                                 res.status(201).json({
-                                    message: 'Job  was Created'
+                                    compId: company[0]._id,
+                                    message: 'Job  was Created for Company id:' + company[0]._id
                                 });
                             })
                             .catch((err)=>{
@@ -111,5 +112,72 @@ router.get('/:id', (req:Request, res:Response)=>{
             })
         })
 } );
+
+router.post('/apply/:id', (req:Request, res:Response)=>{
+    job.findById({_id: req.params.id})
+        .exec()
+        .then((doc)=>{
+            if(!doc){
+                return res.status(404).json({
+                    message: "Job was not found"
+                });
+            }
+            console.log(req.body)
+            doc.appliedApplicants.push(req.body.applicantId);
+            doc.save().then(()=>{
+                res.status(200).json({
+                    message: "Job applied to",
+                    job: doc,
+                    goToCompany: {
+                        type: 'GET',
+                        url: req.get('host')+'/company/'+doc.company
+                    } 
+    
+                })
+            })
+        })
+});
+
+router.get('/applied/:id', (req:Request, res:Response)=>{
+    const jobs=[String];
+    const applicantId = req.params.id;
+    job.find()
+        .exec()
+        .then((doc)=>{
+            doc.forEach(d => {
+                // console.log(d);
+                d.appliedApplicants.forEach(a =>{
+                    console.log("hello");
+                    // jobs.push(a);
+                    
+                    if(applicantId === a.toString()){
+                        console.log(a.toString() + " applicant id matched " + applicantId);
+                        jobs.push(d._id.toString());
+                    }
+                });
+                
+                
+                // jobs.push(d);
+                
+            });
+            console.log(jobs.length);
+            // jobs.forEach(j=>{
+
+            // })
+            res.status(200).json({
+                message: "Jobs applied to",
+                applicant: applicantId,
+                jobs: jobs,
+                // goToCompany: {
+                //     type: 'GET',
+                //     url: req.get('host')+'/company/'+d.company
+                // } 
+
+            })
+        }).catch((err)=>{
+            console.log(err);
+        })
+        
+})
 
 export default router;

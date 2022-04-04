@@ -19,8 +19,8 @@ const applicantSchema = new mongoose.Schema({
     //     required: true
     // },
     _id: mongoose.Schema.Types.ObjectId,
-    applicantName: {type: String},
-    applicantAge: {type:Number},
+    applicantName: {type: String, default:"Greenie"},
+    applicantAge: {type:Number, default: 22},
     applicantUser: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'user',

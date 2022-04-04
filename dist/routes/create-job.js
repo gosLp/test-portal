@@ -51,7 +51,8 @@ router.post('/create', (req, res) => {
                 then((doc) => {
                 console.log(doc);
                 res.status(201).json({
-                    message: 'Job  was Created'
+                    compId: company[0]._id,
+                    message: 'Job  was Created for Company id:' + company[0]._id
                 });
             })
                 .catch((err) => {
@@ -85,6 +86,54 @@ router.get('/:id', (req, res) => {
                 url: req.get('host') + '/company/' + doc.company
             }
         });
+    });
+});
+router.post('/apply/:id', (req, res) => {
+    job_model_1.default.findById({ _id: req.params.id })
+        .exec()
+        .then((doc) => {
+        if (!doc) {
+            return res.status(404).json({
+                message: "Job was not found"
+            });
+        }
+        console.log(req.body);
+        doc.appliedApplicants.push(req.body.applicantId);
+        doc.save().then(() => {
+            res.status(200).json({
+                message: "Job applied to",
+                job: doc,
+                goToCompany: {
+                    type: 'GET',
+                    url: req.get('host') + '/company/' + doc.company
+                }
+            });
+        });
+    });
+});
+router.get('/applied/:id', (req, res) => {
+    const jobs = [String];
+    const applicantId = req.params.id;
+    job_model_1.default.find()
+        .exec()
+        .then((doc) => {
+        doc.forEach(d => {
+            d.appliedApplicants.forEach(a => {
+                console.log("hello");
+                if (applicantId === a.toString()) {
+                    console.log(a.toString() + " applicant id matched " + applicantId);
+                    jobs.push(d._id.toString());
+                }
+            });
+        });
+        console.log(jobs.length);
+        res.status(200).json({
+            message: "Jobs applied to",
+            applicant: applicantId,
+            jobs: jobs,
+        });
+    }).catch((err) => {
+        console.log(err);
     });
 });
 exports.default = router;

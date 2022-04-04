@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const applicantSchema = new mongoose_1.default.Schema({
     _id: mongoose_1.default.Schema.Types.ObjectId,
-    applicantName: { type: String },
-    applicantAge: { type: Number },
+    applicantName: { type: String, default: "Greenie" },
+    applicantAge: { type: Number, default: 22 },
     applicantUser: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'user',
